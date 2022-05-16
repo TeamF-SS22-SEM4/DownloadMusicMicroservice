@@ -1,0 +1,9 @@
+version: '3.9'
+services:
+  download-microservice:
+    container_name: download-microservice
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.jvm
+    ports:
+      - "8082:8080"
