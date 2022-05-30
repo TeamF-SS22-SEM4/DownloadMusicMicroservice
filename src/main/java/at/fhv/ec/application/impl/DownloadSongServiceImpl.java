@@ -31,7 +31,6 @@ public class DownloadSongServiceImpl implements DownloadSongService {
 
     @Override
     public byte[] downloadSong(String username, UUID songId) throws NoSuchElementException, IOException {
-        /*
         Song song = songRepository.findBySongId(new SongId(songId)).orElseThrow(NoSuchElementException::new);
 
         // Check if song was bought by user
@@ -40,7 +39,7 @@ public class DownloadSongServiceImpl implements DownloadSongService {
         if(!song.getUsers().contains(user.getUserId())) {
             throw new UnsupportedOperationException();
         }
-         */
+
 
         // Generate byte array with song file
         File songFile = new File(FILEPATH);
