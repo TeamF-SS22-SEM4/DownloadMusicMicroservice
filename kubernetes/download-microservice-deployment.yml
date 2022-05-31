@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: download-microservice
+spec:
+  selector:
+    matchLabels:
+      app: download-microservice
+  template:
+    metadata:
+      name: download-microservice
+      labels:
+        app: download-microservice
+    spec:
+      containers:
+        - name: download-microservice
+          image: team-f-download-microservice-jvm
+          env:
+            - name: POSTGRES_USER # Secret
+              valueFrom:
+                secretKeyRef:
+                  name: download-service-secret
+                  key: postgres_username
+                  optional: false
+            - name: POSTGRES_PASSWORD # Secret
+              valueFrom:
+                secretKeyRef:
+                  name: download-service-secret
+                  key: postgres_password
+                  optional: false
+            - name: POSTGRES_DB # ConfigMap
+              valueFrom:
+                configMapKeyRef:
+                  key: postgres_db
+                  name: download-microservice-configmap
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8082
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: download-microservice
+spec:
+  selector:
+    app: download-microservice
+  ports:
+    - name: http
+      port: 8082
+      targetPort: 8082
+
+
