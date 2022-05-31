@@ -1,5 +1,6 @@
 package at.fhv.ec.communication.queue;
 
+import at.fhv.ec.application.api.PurchaseService;
 import at.fhv.ss22.ea.f.communication.dto.DigitalProductPurchasedDTO;
 import com.google.gson.Gson;
 import io.quarkus.scheduler.Scheduled;
@@ -9,14 +10,17 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.List;
 
 @ApplicationScoped
 public class EventListener {
-    // TODO: Implement EventListener
-    private static final String PURCHASE_EVENT_QUEUE_NAME = "purchasedQueue";
-    private static final Gson GSON = new Gson();
+    @Inject
+    PurchaseService purchaseService;
 
+    private static final Gson GSON = new Gson();
+    @ConfigProperty(name = "redis.queue.name")
+    String purchaseEventQueueName;
     @ConfigProperty(name = "redis.host")
     String redisHost;
 
@@ -28,13 +32,13 @@ public class EventListener {
         JedisPool jedisPool = new JedisPool(redisHost, redisPort);
 
         try(Jedis jedis = jedisPool.getResource()) {
-            List<String> events = jedis.brpop(0, PURCHASE_EVENT_QUEUE_NAME);
+            List<String> events = jedis.brpop(0, purchaseEventQueueName);
 
             for (String s : events) {
-                if(!s.equalsIgnoreCase(PURCHASE_EVENT_QUEUE_NAME)) {
+                if(!s.equalsIgnoreCase(purchaseEventQueueName)) {
                     DigitalProductPurchasedDTO event = GSON.fromJson(s, DigitalProductPurchasedDTO.class);
 
-                    // TODO: Process event
+                    purchaseService.receivePurchase(event);
 
                     System.out.println(event);
                 }

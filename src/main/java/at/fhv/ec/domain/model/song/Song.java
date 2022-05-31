@@ -3,6 +3,7 @@ package at.fhv.ec.domain.model.song;
 import at.fhv.ec.domain.model.user.UserId;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,6 +27,15 @@ public class Song {
         this.songId = songId;
         this.albumName = albumName;
         this.title = title;
+        this.users = new ArrayList<>();
+    }
+
+    public void addUserAsSongOwner(UserId userId) {
+        if(users.contains(userId)) {
+            throw new UnsupportedOperationException();
+        }
+
+        users.add(userId);
     }
 
     public SongId getSongId() {

@@ -12,4 +12,8 @@ public class HibernateSongRepository implements PanacheRepository<Song> {
     public Optional<Song> findBySongId(SongId songId) {
         return Optional.ofNullable(find("songId", songId).firstResult());
     }
+
+    public Optional<Song> findByTitleAndAlbum(String title, String album) {
+        return Optional.ofNullable(find("title = ?1 and albumName = ?2", title, album).firstResult());
+    }
 }

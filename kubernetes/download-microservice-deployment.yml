@@ -33,6 +33,21 @@ spec:
                 configMapKeyRef:
                   key: postgres_db
                   name: download-microservice-configmap
+            - name: REDIS_HOST # ConfigMap
+              valueFrom:
+                configMapKeyRef:
+                  key: redis_host
+                  name: download-microservice-configmap
+            - name: REDIS_PORT # ConfigMap
+              valueFrom:
+                configMapKeyRef:
+                  key: redis_port
+                  name: download-microservice-configmap
+            - name: REDIS_QUEUE_NAME # ConfigMap
+              valueFrom:
+                configMapKeyRef:
+                  key: redis_queue_name
+                  name: download-microservice-configmap
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -44,6 +59,7 @@ kind: Service
 metadata:
   name: download-microservice
 spec:
+  type: LoadBalancer
   selector:
     app: download-microservice
   ports:
