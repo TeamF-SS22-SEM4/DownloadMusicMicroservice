@@ -36,3 +36,7 @@ nb-configuration.xml
 .env
 
 /kubernetes/secret.yml
+*secret.yaml
+!*secret.dist.yaml
+*secret.yml
+!*secret.dist.yml
