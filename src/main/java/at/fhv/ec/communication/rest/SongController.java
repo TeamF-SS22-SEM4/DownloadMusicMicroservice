@@ -12,7 +12,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -34,7 +33,7 @@ public class SongController {
             return Response.ok(songFile)
                     .header("Content-Disposition", "attachment;filename=example.mp3")
                     .build();
-        } catch (NoSuchElementException | IOException e) {
+        } catch (NoSuchElementException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
