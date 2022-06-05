@@ -6,31 +6,25 @@ import at.fhv.ec.domain.model.song.SongId;
 import at.fhv.ec.domain.model.user.User;
 import at.fhv.ec.infrastructure.HibernateSongRepository;
 import at.fhv.ec.infrastructure.HibernateUserRepository;
-import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @ApplicationScoped
 public class DownloadSongServiceImpl implements DownloadSongService {
     @Inject
-    Logger logger;
-
-    @Inject
     HibernateUserRepository userRepository;
 
     @Inject
     HibernateSongRepository songRepository;
 
-    private static final String FILEPATH = "/files/mp3/example.mp3";
-
     @Override
-    public byte[] downloadSong(String username, UUID songId) throws NoSuchElementException, IOException {
+    public byte[] downloadSong(String username, UUID songId) throws NoSuchElementException {
         Song song = songRepository.findBySongId(new SongId(songId)).orElseThrow(NoSuchElementException::new);
 
         // Check if song was bought by user
@@ -40,15 +34,14 @@ public class DownloadSongServiceImpl implements DownloadSongService {
             throw new UnsupportedOperationException();
         }
 
+        // Get example mp3 from fileservice
+        Client client = ClientBuilder.newClient();
 
-        // Generate byte array with song file
-        File songFile = new File(FILEPATH);
-
-        if(!songFile.exists()) {
-            logger.info("File not found");
-            throw new NoSuchElementException();
-        }
-
-        return Files.readAllBytes(songFile.toPath());
+        return client
+                .target("http://filesystem-microservice:8080/fileservice-api/v1/files")
+                .path("exampleFile")
+                .request()
+                .accept(MediaType.APPLICATION_OCTET_STREAM)
+                .get(byte[].class);
     }
 }
