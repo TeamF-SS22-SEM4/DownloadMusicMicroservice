@@ -51,24 +51,5 @@ public class EventListener {
 
             redisSubscriber.subscribe(jedisPubSub, purchaseEventQueueName);
         }
-
-        /*
-        JedisPool jedisPool = new JedisPool(redisHost, redisPort);
-
-        try(Jedis jedis = jedisPool.getResource()) {
-            List<String> events = jedis.brpop(0, purchaseEventQueueName);
-
-            for (String s : events) {
-                if(!s.equalsIgnoreCase(purchaseEventQueueName)) {
-                    DigitalProductPurchasedDTO event = GSON.fromJson(s, DigitalProductPurchasedDTO.class);
-
-                    purchaseService.receivePurchase(event);
-
-                    System.out.println(event);
-                }
-            }
-        }
-         */
-
     }
 }
