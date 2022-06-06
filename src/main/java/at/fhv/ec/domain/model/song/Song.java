@@ -2,7 +2,9 @@ package at.fhv.ec.domain.model.song;
 
 import at.fhv.ec.domain.model.user.UserId;
 
-import javax.persistence.*;
+import javax.persistence.ElementCollection;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
