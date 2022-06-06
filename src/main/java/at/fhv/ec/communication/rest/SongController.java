@@ -21,15 +21,15 @@ public class SongController {
     DownloadSongService downloadSongService;
 
     @GET
-    @Path("/{username}/{songId}")
+    @Path("/{username}/{albumName}/{songName}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @APIResponse(responseCode = "200", description = "OK")
     @APIResponse(responseCode = "404", description = "When the song cannot be found.")
     @APIResponseSchema(value = byte[].class, responseCode = "200")
     @Operation(operationId = "getSong", description = "Responds with the MP3 of the song as bytes")
-    public Response getSong(@PathParam("username") String username, @PathParam("songId") UUID songId) {
+    public Response getSong(@PathParam("username") String username, @PathParam("albumName") String albumName, @PathParam("songName") String songName) {
         try {
-            byte[] songFile = downloadSongService.downloadSong(username, songId);
+            byte[] songFile = downloadSongService.downloadSong(username, albumName, songName);
             return Response.ok(songFile)
                     .header("Content-Disposition", "attachment;filename=example.mp3")
                     .build();

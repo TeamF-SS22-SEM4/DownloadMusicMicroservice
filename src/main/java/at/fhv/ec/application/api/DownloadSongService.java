@@ -4,5 +4,5 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 public interface DownloadSongService {
-    byte[] downloadSong(String username, UUID songId) throws NoSuchElementException;
+    byte[] downloadSong(String username, String albumName, String songName) throws NoSuchElementException;
 }

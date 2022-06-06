@@ -24,8 +24,8 @@ public class DownloadSongServiceImpl implements DownloadSongService {
     HibernateSongRepository songRepository;
 
     @Override
-    public byte[] downloadSong(String username, UUID songId) throws NoSuchElementException {
-        Song song = songRepository.findBySongId(new SongId(songId)).orElseThrow(NoSuchElementException::new);
+    public byte[] downloadSong(String username, String albumName, String songName) throws NoSuchElementException {
+        Song song = songRepository.findByTitleAndAlbum(songName, albumName).orElseThrow(NoSuchElementException::new);
 
         // Check if song was bought by user
         User user = userRepository.findByUsername(username).orElseThrow(NoSuchElementException::new);
