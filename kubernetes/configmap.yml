@@ -6,4 +6,4 @@ data:
   postgres_db: "downloaddb"
   redis_host: "queue-service"
   redis_port: "6379"
-  redis_queue_name: "purchasedQueue"
+  redis_queue_name: "downloadQueue"
