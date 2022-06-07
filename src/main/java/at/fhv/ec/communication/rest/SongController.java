@@ -31,7 +31,7 @@ public class SongController {
         try {
             byte[] songFile = downloadSongService.downloadSong(username, albumName, songName);
             return Response.ok(songFile)
-                    .header("Content-Disposition", "attachment;filename=example.mp3")
+                    .header("Content-Disposition", "attachment;filename=" + songName + ".mp3")
                     .build();
         } catch (NoSuchElementException e) {
             return Response.status(Response.Status.NOT_FOUND).build();

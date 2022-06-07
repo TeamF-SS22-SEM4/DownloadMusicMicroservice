@@ -2,7 +2,6 @@ package at.fhv.ec.application.impl;
 
 import at.fhv.ec.application.api.DownloadSongService;
 import at.fhv.ec.domain.model.song.Song;
-import at.fhv.ec.domain.model.song.SongId;
 import at.fhv.ec.domain.model.user.User;
 import at.fhv.ec.infrastructure.HibernateSongRepository;
 import at.fhv.ec.infrastructure.HibernateUserRepository;
@@ -13,7 +12,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @ApplicationScoped
 public class DownloadSongServiceImpl implements DownloadSongService {
