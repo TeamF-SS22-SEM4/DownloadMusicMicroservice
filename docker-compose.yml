@@ -16,9 +16,7 @@ services:
       - .env
   download-microservice:
     container_name: download-microservice
-    build:
-      context: .
-      dockerfile: ./src/main/docker/Dockerfile.jvm
+    image: smighty/download-service:latest
     env_file:
       - .env
     ports:
@@ -29,8 +27,11 @@ services:
       - download-postgres
     networks:
       - download_microservice_network
+      - microservices
 
 networks:
   download_microservice_network:
     name: download_microservice_network
     driver: bridge
+  microservices:
+    external: true

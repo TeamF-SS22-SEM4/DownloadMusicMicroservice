@@ -1,9 +1,39 @@
 version: "3.9"
 services:
-  download-microservice:
+  download-postgres:
+    container_name: download-postgres
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5433:5432"
     networks:
-      - inter_server_connection
+      - download_microservice_network
+    env_file:
+      - .env
+  download-microservice:
+      container_name: download-microservice
+      build:
+        context: .
+        dockerfile: ./src/main/docker/Dockerfile.jvm
+      env_file:
+        - .env
+      ports:
+        - "8082:8080"
+      depends_on:
+        - download-postgres
+      links:
+        - download-postgres
+      networks:
+        - download_microservice_network
+        - inter_server_connection
 
 networks:
+  download_microservice_network:
+    name: download_microservice_network
+    driver: bridge
   inter_server_connection:
     external: true
