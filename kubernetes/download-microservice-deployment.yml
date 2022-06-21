@@ -59,7 +59,7 @@ kind: Service
 metadata:
   name: download-microservice
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: download-microservice
   ports:
